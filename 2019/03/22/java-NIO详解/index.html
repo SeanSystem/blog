@@ -194,7 +194,7 @@ Channel和Buffe...">
 </li>
 </ul>
 <p>其它的组件:Pipe和FileLock是与三个核心组件共同使用的工具类.</p>
-<h2 id="Channel和Buffer"><a href="#Channel和Buffer" class="headerlink" title="Channel和Buffer"></a>Channel和Buffer</h2><p>所有的IO再NIO中都从一个Channel开始,Channel类似于流,Buffer是一个缓存区,Channel中的数据可以读取到Buffer中,也可以从Buffer中读取数据到Channel中. 如下图所示:</p>
+<h2 id="Channel和Buffer"><a href="#Channel和Buffer" class="headerlink" title="Channel和Buffer"></a>Channel和Buffer</h2><p>所有的IO在NIO中都从一个Channel开始,Channel类似于流,Buffer是一个缓存区,Channel中的数据可以读取到Buffer中,也可以从Buffer中读取数据到Channel中. 如下图所示:</p>
 <p><img src="https://www.blog.woshibinge.top/img/overview-channels-buffers1.png" alt="&quot;图1&quot;"></p>
 <p>Java NIO中Channel的一些主要实现:</p>
 <ul>
@@ -224,7 +224,7 @@ Channel和Buffe...">
 <li><p>ShortBuffer</p>
 </li>
 </ul>
-<p>这些Buffer覆盖了java中7中基本数据类型.</p>
+<p>这些Buffer覆盖了java中7种基本数据类型.</p>
 <p>java NIO中还有个MappedByteBuffer,用于表示内存映射文件.</p>
 <h2 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h2><p>Selector允许在单线程中处理多个Channel.如果你的应用打开了多个连接(通道),但是每个连接的流量都很低,使用Selector就会很方便.列如一个聊天服务器.</p>
 <p>单线程中一个Channel处理3个Channel的图示:</p>
