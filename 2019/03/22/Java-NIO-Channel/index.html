@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="知识储库">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://www.blog.woshibinge.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="Java,NIO">
+
+
+    <meta name="description" content="什么是ChannelJava NIO的通道类似留,但又有些不同:
+
+既可以从通道读取数据,又可以从通道写数据.但流通常是单向的
+
+通道支持异步地读写
+
+通道中的数据总是要先读到缓冲区,从缓冲区写...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Java NIO Channel | 知识储库</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="知识储库" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Sean">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 不断的学习才能使人进步! </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://www.blog.woshibinge.top">知识储库</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>Home</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具/"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Java NIO Channel">
+            
+	            Java NIO Channel
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/后端/">后端</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Java/">Java</a> <a class="tag-link" href="/tags/NIO/">NIO</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/03/22</span>
+        </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="什么是Channel"><a href="#什么是Channel" class="headerlink" title="什么是Channel"></a>什么是Channel</h2><p>Java NIO的通道类似留,但又有些不同:</p>
+<ul>
+<li><p>既可以从通道读取数据,又可以从通道写数据.但流通常是单向的</p>
+</li>
+<li><p>通道支持异步地读写</p>
+</li>
+<li><p>通道中的数据总是要先读到缓冲区,从缓冲区写入数据到通道.如下图:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![&quot;图1&quot;](https://www.blog.woshibinge.top/img/overview-channels-buffers1.png)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Channel的实现"><a href="#Channel的实现" class="headerlink" title="Channel的实现"></a>Channel的实现</h2><p>Java NIO中重要的通道实现如下:</p>
+<ul>
+<li><p>FileChannel</p>
+</li>
+<li><p>DatagramChannel</p>
+</li>
+<li><p>SocketChannel</p>
+</li>
+<li><p>ServerSocketChannel</p>
+</li>
+</ul>
+<p>FileChannel表示文件读写的通道.</p>
+<p>DatagramChannel是通过udp协议的网络读写.</p>
+<p>SocketChannel表示通过tup协议的网络读写.</p>
+<p>ServerSocketSocket监听新的tcp请求,对每次新建立的连接都会创建一个SocketChannel.</p>
+<h2 id="FileChannel"><a href="#FileChannel" class="headerlink" title="FileChannel"></a>FileChannel</h2><p>Java NIO中的FileChannel是一个连接到文件的通道,可以通过该通道对文件进行读写操作.</p>
+<p>FileChannel无法设置为非阻塞的模式,它总是运行在阻塞模式下.</p>
+<h3 id="打开FileChannel"><a href="#打开FileChannel" class="headerlink" title="打开FileChannel"></a>打开FileChannel</h3><p>使用FileChannel前,需要打开它.但是我们无法直接打开一个FileChannel,需要通过InputStream,OutputStream或者RandomAccessFile来获取一个FileChannel实例.如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile aFile = new RandomAccessFile(&quot;d.txt&quot;, &quot;rw&quot;); </span><br><span class="line">FileChannel channel = aFile.getChannel();</span><br></pre></td></tr></table></figure>
+<h3 id="从FileChannel读取数据"><a href="#从FileChannel读取数据" class="headerlink" title="从FileChannel读取数据"></a>从FileChannel读取数据</h3><p>调用多个read()方法之一从FileChannel中读取数据。如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">int bytesRead = inChannel.read(buf);</span><br></pre></td></tr></table></figure>
+<p>首先，分配一个Buffer。从FileChannel中读取的数据将被读到Buffer中。</p>
+<p>然后，调用FileChannel.read()方法。该方法将数据从FileChannel读取到Buffer中。read()方法返回的int值表示了有多少字节被读到了Buffer中。如果返回-1，表示到了文件末尾。</p>
+<h3 id="向FileChannel写数据"><a href="#向FileChannel写数据" class="headerlink" title="向FileChannel写数据"></a>向FileChannel写数据</h3><p>使用FileChannel.write()方法向FileChannel写数据，该方法的参数是一个Buffer。如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String newData = &quot;New String to write to file...&quot; + System.currentTimeMillis();</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">buf.clear();</span><br><span class="line">buf.put(newData.getBytes());</span><br><span class="line">buf.flip();</span><br><span class="line">while(buf.hasRemaining()) &#123;</span><br><span class="line">channel.write(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意FileChannel.write()是在while循环中调用的。因为无法保证write()方法一次能向FileChannel写入多少字节，因此需要重复调用write()方法，直到Buffer中已经没有尚未写入通道的字节。</p>
+<h3 id="关闭FileChannel"><a href="#关闭FileChannel" class="headerlink" title="关闭FileChannel"></a>关闭FileChannel</h3><p>用完FileChannel后必须将其关闭。如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.close();</span><br></pre></td></tr></table></figure>
+<h3 id="FileChannel的position方法"><a href="#FileChannel的position方法" class="headerlink" title="FileChannel的position方法"></a>FileChannel的position方法</h3><p>有时可能需要在FileChannel的某个特定位置进行数据的读/写操作。可以通过调用position()方法获取FileChannel的当前位置。</p>
+<p>也可以通过调用position(long pos)方法设置FileChannel的当前位置。</p>
+<p>这里有两个例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">long pos = channel.position();</span><br><span class="line">channel.position(pos +123);</span><br></pre></td></tr></table></figure>
+<p>如果将位置设置在文件结束符之后，然后试图从文件通道中读取数据，读方法将返回-1 —— 文件结束标志。</p>
+<p>如果将位置设置在文件结束符之后，然后向通道中写数据，文件将撑大到当前位置并写入数据。这可能导致“文件空洞”，磁盘上物理文件中写入的数据间有空隙。</p>
+<h3 id="FileChannel的size方法"><a href="#FileChannel的size方法" class="headerlink" title="FileChannel的size方法"></a>FileChannel的size方法</h3><p>FileChannel实例的size()方法将返回该实例所关联文件的大小。如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long fileSize = channel.size();</span><br></pre></td></tr></table></figure>
+<h3 id="FileChannel的truncate方法"><a href="#FileChannel的truncate方法" class="headerlink" title="FileChannel的truncate方法"></a>FileChannel的truncate方法</h3><p>可以使用FileChannel.truncate()方法截取一个文件。截取文件时，文件将中指定长度后面的部分将被删除。如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.truncate(1024);</span><br></pre></td></tr></table></figure>
+<p>这个例子截取文件的前1024个字节。</p>
+<h3 id="FileChannel的force方法"><a href="#FileChannel的force方法" class="headerlink" title="FileChannel的force方法"></a>FileChannel的force方法</h3><p>FileChannel.force()方法将通道里尚未写入磁盘的数据强制写到磁盘上。出于性能方面的考虑，操作系统会将数据缓存在内存中，所以无法保证写入到FileChannel里的数据一定会即时写到磁盘上。要保证这一点，需要调用force()方法。</p>
+<p>force()方法有一个boolean类型的参数，指明是否同时将文件元数据（权限信息等）写到磁盘上。</p>
+<p>下面的例子同时将文件数据和元数据强制写到磁盘上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.force(true);</span><br></pre></td></tr></table></figure>
+<h2 id="DatagramChannel"><a href="#DatagramChannel" class="headerlink" title="DatagramChannel"></a>DatagramChannel</h2><p>Java NIO中的DatagramChannel是一个能收发UDP包的通道。因为UDP是无连接的网络协议，所以不能像其它通道那样读取和写入。它发送和接收的是数据包。</p>
+<h3 id="打开-DatagramChannel"><a href="#打开-DatagramChannel" class="headerlink" title="打开 DatagramChannel"></a>打开 DatagramChannel</h3><p>下面是 DatagramChannel 的打开方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DatagramChannel channel = DatagramChannel.open();</span><br><span class="line">channel.socket().bind(new InetSocketAddress(``9999``));</span><br></pre></td></tr></table></figure>
+<p>这个例子打开的 DatagramChannel可以在UDP端口9999上接收数据包。</p>
+<h3 id="接收数据"><a href="#接收数据" class="headerlink" title="接收数据"></a>接收数据</h3><p>通过receive()方法从DatagramChannel接收数据，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">buf.clear();</span><br><span class="line">channel.receive(buf);</span><br></pre></td></tr></table></figure>
+<p>receive()方法会将接收到的数据包内容复制到指定的Buffer. 如果Buffer容不下收到的数据，多出的数据将被丢弃。</p>
+<h3 id="发送数据"><a href="#发送数据" class="headerlink" title="发送数据"></a>发送数据</h3><p>通过send()方法从DatagramChannel发送数据，如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String newData =``&quot;New String to write to file...&quot;``+ System.currentTimeMillis();</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">buf.clear();</span><br><span class="line">buf.put(newData.getBytes());</span><br><span class="line">buf.flip();</span><br><span class="line">int bytesSent = channel.send(buf, new InetSocketAddress( &quot;jenkov.com&quot; , 80));</span><br></pre></td></tr></table></figure>
+<p>这个例子发送一串字符到”jenkov.com”服务器的UDP端口80。 因为服务端并没有监控这个端口，所以什么也不会发生。也不会通知你发出的数据包是否已收到，因为UDP在数据传送方面没有任何保证。</p>
+<h3 id="连接到特定的地址"><a href="#连接到特定的地址" class="headerlink" title="连接到特定的地址"></a>连接到特定的地址</h3><p>可以将DatagramChannel“连接”到网络中的特定地址的。由于UDP是无连接的，连接到特定地址并不会像TCP通道那样创建一个真正的连接。而是锁住DatagramChannel ，让其只能从特定地址收发数据。</p>
+<p>这里有个例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.connect(new InetSocketAddress(&quot;jenkov.com&quot;,80));</span><br></pre></td></tr></table></figure>
+<p>当连接后，也可以使用read()和write()方法，就像在用传统的通道一样。只是在数据传送方面没有任何保证。这里有几个例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int bytesRead = channel.read(buf);</span><br><span class="line">int bytesWritten = channel.write(but);</span><br></pre></td></tr></table></figure>
+<h2 id="SocketChannel"><a href="#SocketChannel" class="headerlink" title="SocketChannel"></a>SocketChannel</h2><p>Java NIO中的SocketChannel是一个连接到TCP网络套接字的通道。可以通过以下2种方式创建SocketChannel：</p>
+<ol>
+<li><p>打开一个SocketChannel并连接到互联网上的某台服务器。</p>
+</li>
+<li><p>一个新连接到达ServerSocketChannel时，会创建一个SocketChannel。</p>
+</li>
+</ol>
+<h3 id="打开-SocketChannel"><a href="#打开-SocketChannel" class="headerlink" title="打开 SocketChannel"></a>打开 SocketChannel</h3><p>下面是SocketChannel的打开方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SocketChannel socketChannel = SocketChannel.open();</span><br><span class="line">socketChannel.connect(new InetSocketAddress(&quot;[http://jenkov.com](http://jenkov.com/)&quot;,80));</span><br></pre></td></tr></table></figure>
+<h3 id="关闭-SocketChannel"><a href="#关闭-SocketChannel" class="headerlink" title="关闭 SocketChannel"></a>关闭 SocketChannel</h3><p>当用完SocketChannel之后调用SocketChannel.close()关闭SocketChannel：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socketChannel.close();</span><br></pre></td></tr></table></figure>
+<h3 id="从-SocketChannel-读取数据"><a href="#从-SocketChannel-读取数据" class="headerlink" title="从 SocketChannel 读取数据"></a>从 SocketChannel 读取数据</h3><p>要从SocketChannel中读取数据，调用一个read()的方法之一。以下是例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer buf = ByteBuffer.allocate(``48``);</span><br><span class="line">`int``bytesRead = socketChannel.read(buf);</span><br></pre></td></tr></table></figure>
+<p>首先，分配一个Buffer。从SocketChannel读取到的数据将会放到这个Buffer中。</p>
+<p>然后，调用SocketChannel.read()。该方法将数据从SocketChannel 读到Buffer中。read()方法返回的int值表示读了多少字节进Buffer里。如果返回的是-1，表示已经读到了流的末尾（连接关闭了）。</p>
+<h3 id="写入-SocketChannel"><a href="#写入-SocketChannel" class="headerlink" title="写入 SocketChannel"></a>写入 SocketChannel</h3><p>写数据到SocketChannel用的是SocketChannel.write()方法，该方法以一个Buffer作为参数。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String newData =&quot;New String to write to file...&quot;+ System.currentTimeMillis();</span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(48);</span><br><span class="line">buf.clear();</span><br><span class="line">buf.put(newData.getBytes());</span><br><span class="line">buf.flip();</span><br><span class="line">while(buf.hasRemaining()) &#123;</span><br><span class="line">channel.write(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意SocketChannel.write()方法的调用是在一个while循环中的。Write()方法无法保证能写多少字节到SocketChannel。所以，我们重复调用write()直到Buffer没有要写的字节为止。</p>
+<h3 id="非阻塞模式"><a href="#非阻塞模式" class="headerlink" title="非阻塞模式"></a>非阻塞模式</h3><p>可以设置 SocketChannel 为非阻塞模式（non-blocking mode）.设置之后，就可以在异步模式下调用connect(), read() 和write()了。</p>
+<h4 id="connect"><a href="#connect" class="headerlink" title="connect()"></a>connect()</h4><p>如果SocketChannel在非阻塞模式下，此时调用connect()，该方法可能在连接建立之前就返回了。为了确定连接是否建立，可以调用finishConnect()的方法。像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">socketChannel.configureBlocking(false);</span><br><span class="line">socketChannel.connect(new InetSocketAddress(&quot;[http://jenkov.com](http://jenkov.com/)&quot;,80));</span><br><span class="line">while(! socketChannel.finishConnect() )&#123;</span><br><span class="line">//wait, or do something else...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="write"><a href="#write" class="headerlink" title="write()"></a>write()</h4><p>非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()。前面已经有例子了，这里就不赘述了。</p>
+<h4 id="read"><a href="#read" class="headerlink" title="read()"></a>read()</h4><p>非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。</p>
+<h3 id="非阻塞模式与选择器"><a href="#非阻塞模式与选择器" class="headerlink" title="非阻塞模式与选择器"></a>非阻塞模式与选择器</h3><p>非阻塞模式与选择器搭配会工作的更好，通过将一或多个SocketChannel注册到Selector，可以询问选择器哪个通道已经准备好了读取，写入等。Selector与SocketChannel的搭配使用会在后面详讲。</p>
+<h2 id="ServerSocketChannel"><a href="#ServerSocketChannel" class="headerlink" title="ServerSocketChannel"></a>ServerSocketChannel</h2><p>Java NIO中的 ServerSocketChannel 是一个可以监听新进来的TCP连接的通道, 就像标准IO中的ServerSocket一样。ServerSocketChannel类在 java.nio.channels包中。</p>
+<p>这里有个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();</span><br><span class="line">serverSocketChannel.socket().bind(new InetSocketAddress(9999));</span><br><span class="line">while(true)&#123;</span><br><span class="line">SocketChannel socketChannel = serverSocketChannel.accept();</span><br><span class="line">//do something with socketChannel...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="打开-ServerSocketChannel"><a href="#打开-ServerSocketChannel" class="headerlink" title="打开 ServerSocketChannel"></a>打开 ServerSocketChannel</h3><p>通过调用 ServerSocketChannel.open() 方法来打开ServerSocketChannel.如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();</span><br></pre></td></tr></table></figure>
+<h3 id="关闭-ServerSocketChannel"><a href="#关闭-ServerSocketChannel" class="headerlink" title="关闭 ServerSocketChannel"></a>关闭 ServerSocketChannel</h3><p>通过调用ServerSocketChannel.close() 方法来关闭ServerSocketChannel. 如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">serverSocketChannel.close();</span><br></pre></td></tr></table></figure>
+<h3 id="监听新进来的连接"><a href="#监听新进来的连接" class="headerlink" title="监听新进来的连接"></a>监听新进来的连接</h3><p>通过 ServerSocketChannel.accept() 方法监听新进来的连接。当 accept()方法返回的时候,它返回一个包含新进来的连接的 SocketChannel。因此, accept()方法会一直阻塞到有新连接到达。</p>
+<p>通常不会仅仅只监听一个连接,在while循环中调用 accept()方法. 如下面的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while(true)&#123;</span><br><span class="line">SocketChannel socketChannel = serverSocketChannel.accept();</span><br><span class="line">//do something with socketChannel...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然,也可以在while循环中使用除了true以外的其它退出准则。</p>
+<h3 id="非阻塞模式-1"><a href="#非阻塞模式-1" class="headerlink" title="非阻塞模式"></a>非阻塞模式</h3><p>ServerSocketChannel可以设置成非阻塞模式。在非阻塞模式下，accept() 方法会立刻返回，如果还没有新进来的连接,返回的将是null。 因此，需要检查返回的SocketChannel是否是null.如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();</span><br><span class="line">serverSocketChannel.socket().bind(new InetSocketAddress(9999));</span><br><span class="line">serverSocketChannel.configureBlocking(false);</span><br><span class="line">while(true)&#123;</span><br><span class="line">SocketChannel socketChannel = serverSocketChannel.accept();</span><br><span class="line">if(socketChannel != null)&#123;</span><br><span class="line">//do something with socketChannel...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/03/22/java-NIO详解/" class="next-post btn btn-default" title="Java NIO(概述)">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Java NIO(概述)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '6qImBpCVree6pTPo3X3IH9UR-gzGzoHsz',
+            appKey: 'NkFjS4NojS1LPMw02VTqqzIt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: ''.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">Table of Contents</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Channel"><span class="toc-text">什么是Channel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Channel的实现"><span class="toc-text">Channel的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileChannel"><span class="toc-text">FileChannel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开FileChannel"><span class="toc-text">打开FileChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从FileChannel读取数据"><span class="toc-text">从FileChannel读取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向FileChannel写数据"><span class="toc-text">向FileChannel写数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭FileChannel"><span class="toc-text">关闭FileChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileChannel的position方法"><span class="toc-text">FileChannel的position方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileChannel的size方法"><span class="toc-text">FileChannel的size方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileChannel的truncate方法"><span class="toc-text">FileChannel的truncate方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileChannel的force方法"><span class="toc-text">FileChannel的force方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DatagramChannel"><span class="toc-text">DatagramChannel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开-DatagramChannel"><span class="toc-text">打开 DatagramChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接收数据"><span class="toc-text">接收数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#发送数据"><span class="toc-text">发送数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连接到特定的地址"><span class="toc-text">连接到特定的地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SocketChannel"><span class="toc-text">SocketChannel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开-SocketChannel"><span class="toc-text">打开 SocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭-SocketChannel"><span class="toc-text">关闭 SocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从-SocketChannel-读取数据"><span class="toc-text">从 SocketChannel 读取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写入-SocketChannel"><span class="toc-text">写入 SocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非阻塞模式"><span class="toc-text">非阻塞模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#connect"><span class="toc-text">connect()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#write"><span class="toc-text">write()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#read"><span class="toc-text">read()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非阻塞模式与选择器"><span class="toc-text">非阻塞模式与选择器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ServerSocketChannel"><span class="toc-text">ServerSocketChannel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开-ServerSocketChannel"><span class="toc-text">打开 ServerSocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭-ServerSocketChannel"><span class="toc-text">关闭 ServerSocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#监听新进来的连接"><span class="toc-text">监听新进来的连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非阻塞模式-1"><span class="toc-text">非阻塞模式</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
