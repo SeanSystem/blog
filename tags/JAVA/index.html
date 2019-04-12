@@ -150,6 +150,52 @@
         <div class="post-content">
             <div class="post-head home-post-head">
                 <h1 class="post-title">
+                    <a href="/2019/04/12/Java-NIO-Pipe/">Java NIO Pipe</a>
+                </h1>
+                <div class="post-meta">  &bull;
+                    <time class="post-date" datetime title>
+                        2019年04月12日
+                    </time>
+                </div>
+            </div>
+            <p class="brief">
+                
+                    简介Java NIO管道是2个线程之间的单向数据连接.Pipe有一个source通道和一个sink通道.数据会被写到sink通道中,从source通道读取.
+下面是原理图:
+创建管道通过Pipe.open()方法打开管道。例如：
+1P...
+                
+            </p>
+        </div>
+    </article>
+ 
+    <article class="post">
+        
+        <div class="post-content">
+            <div class="post-head home-post-head">
+                <h1 class="post-title">
+                    <a href="/2019/04/10/Java-NIO-Selector/">Java NIO Selector</a>
+                </h1>
+                <div class="post-meta">  &bull;
+                    <time class="post-date" datetime title>
+                        2019年04月10日
+                    </time>
+                </div>
+            </div>
+            <p class="brief">
+                
+                    简介Selector(选择器)是Java NIO中能够检测一到多个NIO通道,并能够知晓通道是否为如读写操作做好准备的组件.这样一个线程就可以管理多个Channel,从而管理多个网络连接.
+为什么使用Selector仅用单个线程来处理...
+                
+            </p>
+        </div>
+    </article>
+ 
+    <article class="post">
+        
+        <div class="post-content">
+            <div class="post-head home-post-head">
+                <h1 class="post-title">
                     <a href="/2019/04/09/Java-NIO-Buffer/">Java NIO Buffer</a>
                 </h1>
                 <div class="post-meta">  &bull;
@@ -162,6 +208,67 @@
                 
                     简介Java NIO中的Buffer用于和NIO通道进行交互.Buffer相当于一个缓冲区,从Channel中进行数据读写操作前需要先将数据读写到Buffer中,再从Buffer中将数据读写到Channel中.
 Buffer的基本用法...
+                
+            </p>
+        </div>
+    </article>
+ 
+    <article class="post">
+        
+        <div class="post-content">
+            <div class="post-head home-post-head">
+                <h1 class="post-title">
+                    <a href="/2019/03/22/Java-NIO-Channel/">Java NIO Channel</a>
+                </h1>
+                <div class="post-meta">  &bull;
+                    <time class="post-date" datetime title>
+                        2019年03月22日
+                    </time>
+                </div>
+            </div>
+            <p class="brief">
+                
+                    什么是ChannelJava NIO的通道类似留,但又有些不同:
+
+既可以从通道读取数据,又可以从通道写数据.但流通常是单向的
+
+通道支持异步地读写
+
+通道中的数据总是要先读到缓冲区,从缓冲区写入数据到通道.如下图:
+
+
+Channe...
+                
+            </p>
+        </div>
+    </article>
+ 
+    <article class="post">
+        
+        <div class="post-content">
+            <div class="post-head home-post-head">
+                <h1 class="post-title">
+                    <a href="/2019/03/22/java-NIO详解/">Java NIO(概述)</a>
+                </h1>
+                <div class="post-meta">  &bull;
+                    <time class="post-date" datetime title>
+                        2019年03月22日
+                    </time>
+                </div>
+            </div>
+            <p class="brief">
+                
+                    概述Java NIO核心组成:
+
+Channel
+
+Buffers
+
+Selectors
+
+
+其它的组件:Pipe和FileLock是与三个核心组件共同使用的工具类.
+Channel和Buffer所有的IO在NIO中都从一个Chann...
                 
             </p>
         </div>
@@ -258,7 +365,7 @@ Buffer的基本用法...
         
     <div class="widget">
         <h3 class="title">Categories</h3>
-        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/前端/"><i class="fa" aria-hidden="true">前端</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/后端/"><i class="fa" aria-hidden="true">后端</i></a><span class="category-list-count">4</span></li></ul>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/前端/"><i class="fa" aria-hidden="true">前端</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/后端/"><i class="fa" aria-hidden="true">后端</i></a><span class="category-list-count">5</span></li></ul>
     </div>
 
 
@@ -266,7 +373,7 @@ Buffer的基本用法...
         
     <div class="widget">
         <h3 class="title">Archives</h3>
-        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/"><i class="fa" aria-hidden="true">2019年04月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/"><i class="fa" aria-hidden="true">2019年03月</i></a><span class="archive-list-count">3</span></li></ul>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/"><i class="fa" aria-hidden="true">2019年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/"><i class="fa" aria-hidden="true">2019年03月</i></a><span class="archive-list-count">3</span></li></ul>
     </div>
 
 
@@ -276,7 +383,7 @@ Buffer的基本用法...
     <h3 class="title">Tag Cloud</h3>
     <div class="content tag-cloud">
         
-            <a href="/tags/JAVA/" style="font-size: 10px;">JAVA</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/MD/" style="font-size: 10px;">MD</a> <a href="/tags/NIO/" style="font-size: 20px;">NIO</a> <a href="/tags/java/" style="font-size: 10px;">java</a>
+            <a href="/tags/JAVA/" style="font-size: 20px;">JAVA</a> <a href="/tags/MD/" style="font-size: 10px;">MD</a> <a href="/tags/NIO/" style="font-size: 20px;">NIO</a>
         
     </div>
   </div>
