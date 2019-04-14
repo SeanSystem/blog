@@ -1,0 +1,341 @@
+<!DOCTYPE HTML>
+<html lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="知识储库">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://www.blog.woshibinge.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="JAVA,Stream">
+
+
+    <meta name="description" content="简介Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。
+Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Java8 Stream基本用法 | 知识储库</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="知识储库" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Sean">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 不断的学习才能使人进步! </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://www.blog.woshibinge.top">知识储库</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>Home</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具/"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Java8 Stream基本用法">
+            
+	            Java8 Stream基本用法
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/后端/">后端</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA/">JAVA</a> <a class="tag-link" href="/tags/Stream/">Stream</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/04/14</span>
+        </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。</p>
+<p>Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。</p>
+<p>Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。</p>
+<p>这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处理， 比如筛选， 排序，聚合等。<br><img src="https://www.blog.woshibinge.top/img/timg.jpg" alt="&quot;图&quot;"></p>
+<h2 id="什么是Stream？"><a href="#什么是Stream？" class="headerlink" title="什么是Stream？"></a>什么是Stream？</h2><p>Stream（流）是一个来自数据源的元素队列并支持聚合操作</p>
+<ul>
+<li><p>元素是特定类型的对象，形成一个队列。 Java中的Stream并不会存储元素，而是按需计算。</p>
+</li>
+<li><p><strong>数据源</strong>流的来源。 可以是集合，数组，I/O channel， 产生器generator 等。</p>
+</li>
+<li><p><strong>聚合操作</strong>类似SQL语句一样的操作， 比如filter, map, reduce, find, match, sorted等。</p>
+</li>
+</ul>
+<p>和以前的Collection操作不同， Stream操作还有两个基础的特征：</p>
+<ul>
+<li><p><strong>Pipelining</strong>: 中间操作都会返回流对象本身。 这样多个操作可以串联成一个管道， 如同流式风格（fluent style）。 这样做可以对操作进行优化， 比如延迟执行(laziness)和短路( short-circuiting)。</p>
+</li>
+<li><p><strong>内部迭代</strong>： 以前对集合遍历都是通过Iterator或者For-Each的方式, 显式的在集合外部进行迭代， 这叫做外部迭代。 Stream提供了内部迭代的方式， 通过访问者模式(Visitor)实现。</p>
+</li>
+</ul>
+<h2 id="生成Stream流"><a href="#生成Stream流" class="headerlink" title="生成Stream流"></a>生成Stream流</h2><p>在 Java 8 中, 集合接口有两个方法来生成流：</p>
+<ul>
+<li><p><strong>stream()</strong>− 为集合创建串行流。</p>
+</li>
+<li><p><strong>parallelStream()</strong>− 为集合创建并行流。</p>
+<p>生成两种流的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testStream</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//创建strem串行流的方法</span></span><br><span class="line">        Stream stream = people.stream();</span><br><span class="line">        <span class="comment">//创建paralleStream并行流的方法</span></span><br><span class="line">        Stream personStream = people.parallelStream();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Stream常用API"><a href="#Stream常用API" class="headerlink" title="Stream常用API"></a>Stream常用API</h2><p>为测试Stream常用api用法，先创建了如下类用于测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Integer classes;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Integer age;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String name, Integer classes, Integer age)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = name;</span><br><span class="line">            <span class="keyword">this</span>.classes = classes;</span><br><span class="line">            <span class="keyword">this</span>.age = age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Integer <span class="title">getClasses</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> classes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setClasses</span><span class="params">(Integer classes)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.classes = classes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Integer <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(Integer age)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.age = age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"Person&#123;"</span> +</span><br><span class="line">                    <span class="string">"name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                    <span class="string">", classes="</span> + classes +</span><br><span class="line">                    <span class="string">", age="</span> + age +</span><br><span class="line">                    <span class="string">'&#125;'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    List people = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        people.add(<span class="keyword">new</span> Person(<span class="string">"sean"</span>,<span class="number">1</span>,<span class="number">12</span>));</span><br><span class="line">        people.add(<span class="keyword">new</span> Person(<span class="string">"jhon"</span>,<span class="number">2</span>,<span class="number">13</span>));</span><br><span class="line">        people.add(<span class="keyword">new</span> Person(<span class="string">"marry"</span>,<span class="number">3</span>,<span class="number">13</span>));</span><br><span class="line">        people.add(<span class="keyword">new</span> Person(<span class="string">"born"</span>,<span class="number">4</span>,<span class="number">14</span>));</span><br><span class="line">        people.add(<span class="keyword">new</span> Person(<span class="string">"egd"</span>,<span class="number">1</span>,<span class="number">12</span>));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MapToInt-MapToLong-MapToDouble"><a href="#MapToInt-MapToLong-MapToDouble" class="headerlink" title="MapToInt MapToLong MapToDouble"></a>MapToInt MapToLong MapToDouble</h3><p>这三个方法分别是将stream流转换为IntegerStream LongStream DoubleStream流</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMapTo</span><span class="params">()</span></span>&#123;</span><br><span class="line">    people.stream().mapToInt(Person::getAge).forEach(System.out::println);</span><br><span class="line">    people.stream().mapToDouble(Person::getAge).forEach(System.out::println);</span><br><span class="line">    people.stream().mapToLong(Person::getAge).forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Map</p>
+<h3 id="Foreach"><a href="#Foreach" class="headerlink" title="Foreach"></a>Foreach</h3><p>Foreach用于迭代流中的元素，实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testForeach</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//串行流输出</span></span><br><span class="line">        people.stream().forEach(System.out::println);</span><br><span class="line">        <span class="comment">//并行流输出</span></span><br><span class="line">        people.parallelStream().forEach(System.out::println);</span><br><span class="line">        <span class="comment">//使用并行流顺序执行</span></span><br><span class="line">        people.parallelStream().forEachOrdered(System.out::println);</span><br><span class="line">        <span class="comment">//遍历输出某个值</span></span><br><span class="line">        people.stream().forEach(x-&gt;System.out.println(x.getAge()));</span><br><span class="line">        <span class="comment">//获取10个0-100之间的随机数</span></span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        random.ints(<span class="number">0</span>,<span class="number">100</span>).limit(<span class="number">10</span>).forEach(System.out::println);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>注意：在使用并行流进行Foreach遍历Stream流中的元素时不是顺序执行的，若想顺序执行应使用forEachOrdered()方法</p>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><p>map映射每个元素到对应的结果集 类似于数学中的函数 map中指定想要映射的结果集表达式</p>
+<p>实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMap</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="comment">//遍历输出集合中Person的name</span></span><br><span class="line">people.stream().map(Person::getName).collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">  <span class="comment">//遍历输出集合中Person的age</span></span><br><span class="line">people.stream().map(Person::getAge).collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">  <span class="comment">//遍历输出集合中Person的classes</span></span><br><span class="line">people.stream().map(Person::getClasses).collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">  <span class="comment">//遍历输出集合中Person的age与12相比较的结果</span></span><br><span class="line"> people.stream().map(x-&gt;x.getAge()&gt;<span class="number">12</span>).collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">  <span class="comment">//遍历输出集合中Person的age+1的结果</span></span><br><span class="line"> people.stream().map(x-&gt;x.getAge()+<span class="number">1</span>).distinct().collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><p>filter 方法用于通过设置的条件过滤出元素。实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFilter</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="comment">//过滤出集合中Person的age大于13的对象</span></span><br><span class="line"> people.stream().filter(x-&gt;x.getAge()&gt;<span class="number">13</span>).collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">  <span class="comment">//过滤出集合中Person的Classes不等于1的对象</span></span><br><span class="line"> people.stream().filter(x-&gt;x.getClasses() != <span class="number">1</span>).collect(Collectors.toList()).forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Sorted"><a href="#Sorted" class="headerlink" title="Sorted"></a>Sorted</h3><p>sorted 方法用于对流进行排序。实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSorted</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//随机生成100以内的5个整数并按自然排序输出</span></span><br><span class="line">    Random random = <span class="keyword">new</span> Random();</span><br><span class="line">    random.ints(<span class="number">0</span>,<span class="number">100</span>).limit(<span class="number">5</span>).sorted().forEach(System.out::println);</span><br><span class="line">    <span class="comment">//按Person的Age从小到大排序</span></span><br><span class="line">    people.stream().sorted((x,y)-&gt;x.getAge()-y.getAge()).forEach(System.out::println);</span><br><span class="line">    <span class="comment">//按Person的Age从大到小排序</span></span><br><span class="line">    people.stream().sorted((x,y)-&gt;y.getAge()-x.getAge()).forEach(System.out::println);</span><br><span class="line">  	<span class="comment">//按Person的Age从小到大排序</span></span><br><span class="line">    people.stream().sorted((x,y)-&gt;x.getAge().compareTo(y.getAge())).forEach(System.out::println);</span><br><span class="line">    <span class="comment">//按Person的Age从大到小排序</span></span><br><span class="line">    people.stream().sorted((x,y)-&gt;y.getAge().compareTo(x.getAge())).forEach(System.out::println);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Match"><a href="#Match" class="headerlink" title="Match"></a>Match</h3><p>match是用于判断集合中的元素是否满足某个条件，返回值为boolean类型。实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMatch</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="comment">//allMatch是判断集合中的元素是否全部满足</span></span><br><span class="line">  <span class="keyword">boolean</span> b = people.stream().allMatch(x -&gt; x.getAge() &gt; <span class="number">13</span>);</span><br><span class="line">  <span class="comment">//anyMatch是判断集合中的元素任意满足（只要有一个满足就返回true）</span></span><br><span class="line">  <span class="keyword">boolean</span> b1 = people.stream().anyMatch(x -&gt; x.getAge() &gt; <span class="number">13</span>);</span><br><span class="line">  System.out.println(b1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/04/12/Java-NIO-Pipe/" class="next-post btn btn-default" title="Java NIO Pipe">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Java NIO Pipe</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '6qImBpCVree6pTPo3X3IH9UR-gzGzoHsz',
+            appKey: 'NkFjS4NojS1LPMw02VTqqzIt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: ''.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">Table of Contents</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Stream？"><span class="toc-text">什么是Stream？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成Stream流"><span class="toc-text">生成Stream流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream常用API"><span class="toc-text">Stream常用API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MapToInt-MapToLong-MapToDouble"><span class="toc-text">MapToInt MapToLong MapToDouble</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Foreach"><span class="toc-text">Foreach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Filter"><span class="toc-text">Filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorted"><span class="toc-text">Sorted</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Match"><span class="toc-text">Match</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
