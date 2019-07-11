@@ -19,7 +19,7 @@
     <meta name="keywords" content="Vue">
 
 
-    <meta name="description" content="语法基本模板‘’’ Vue               new Vue({      //声明组件的作用范围      el: “app”,      //定义数据区域      data: {...">
+    <meta name="description" content="语法基本模板‘’’Vue               new Vue({      //声明组件的作用范围      el: “app”,      //定义数据区域      data: { ...">
 
 
 
@@ -174,7 +174,7 @@
     </div>
     
     <div class="post-body post-content">
-        <h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h2 id="基本模板"><a href="#基本模板" class="headerlink" title="基本模板"></a>基本模板</h2><p>‘’’ Vue<br>  <div id="app"><br>     <br>  </div><br>  <script><br>    new Vue({<br>      //声明组件的作用范围<br>      el: “app”,<br>      //定义数据区域<br>      data: {<br>        message: ‘hello vue’<br>      },<br>      //定义方法<br>      methods: {</p>
+        <h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h2 id="基本模板"><a href="#基本模板" class="headerlink" title="基本模板"></a>基本模板</h2><p>‘’’Vue<br>  <div id="app"><br>     <br>  </div><br>  <script><br>    new Vue({<br>      //声明组件的作用范围<br>      el: “app”,<br>      //定义数据区域<br>      data: {<br>        message: ‘hello vue’<br>      },<br>      //定义方法<br>      methods: {</p>
 <pre><code>  },
   //在创建时执行的方法可定义在其中
   created: {
@@ -182,12 +182,12 @@
   }
 });
 </code></pre><p>  </script><br>‘’’</p>
-<h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><p>‘’’ Vue<br>   <div id="app"><br>     <p v-if="show">条件判断</p><br>   </div><br>   <script><br>      new Vue({<br>        el: ‘#app’,<br>        data: {<br>          show: true<br>        }<br>      });<br>   </script><br>‘’’</p>
-<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p>‘’’ Vue<br>    <div id="app"><br>      <ul><br>        <li v-for="site in sites"><br>            [object Object]<br>        </li><br>      </ul><br>    </div><br>    <script><br>        new Vue({<br>          el：’#app’,<br>          data: {<br>            sites: [<br>              {name:’上海’},<br>              {name: ‘北京’},<br>              {name: ‘广州’}<br>            ]<br>          }<br>        });<br>    </script><br>‘’’</p>
-<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>‘’’ Vue<br>   <div id="app"><br>      <p>原始字符串：</p><br>      <p>反转字符串：</p><br>   </div><br>   <script><br>      new Vue({<br>        el: ‘#app’,<br>        data: {<br>          message: ‘hello’<br>        },<br>        //computed依赖缓存，当相关依赖发生变化时才会重新取值<br>        computed: {<br>          reverseMessage: function(){<br>              return this.message.split(‘’).reverse()                 .join(‘’);<br>          }<br>        }<br>      });<br>   </script><br>‘’’</p>
-<h2 id="监听属性"><a href="#监听属性" class="headerlink" title="监听属性"></a>监听属性</h2><p>‘’’ Vue<br>    <div id="app"><br>        <button @click="counter++">加一</button><br>        <p></p><br>    </div><br>    <script><br>       var vm = new Vue({<br>          el: ‘#app’,<br>          data: {<br>            counter: 0<br>          }<br>        });<br>        vm.$watch(‘counter’,function(nval,oval){<br>            document.write(‘counter的值由’+oval+’变为’+oval);<br>        });<br>    </script><br>‘’’</p>
-<h2 id="样式绑定"><a href="#样式绑定" class="headerlink" title="样式绑定"></a>样式绑定</h2><p>‘’’ Vue<br>    <div id="app"><br>      <button @click="fontSize--">-</button><br>      <button @click="fontSize++">+</button><br>      <p v-bind:style="{color: activeColor,fontSize: fontSize+'px' }"></p><br>    </div><br>    <script><br>      new Vue({<br>        el：”#app,<br>        data: {<br>          fontSize: 12,<br>          activeColor: ‘green’<br>        }<br>      });<br>    </script><br>‘’’</p>
-<h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>‘’’ Vue<br>  <div id="app"><br>    <!-- `greet` 是在下面定义的方法名 --><br>    <button v-on:click="greet">Greet</button><br>  </div></p>
+<h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><p>‘’’Vue<br>   <div id="app"><br>     <p v-if="show">条件判断</p><br>   </div><br>   <script><br>      new Vue({<br>        el: ‘#app’,<br>        data: {<br>          show: true<br>        }<br>      });<br>   </script><br>‘’’</p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p>‘’’Vue<br>    <div id="app"><br>      <ul><br>        <li v-for="site in sites"><br>            [object Object]<br>        </li><br>      </ul><br>    </div><br>    <script><br>        new Vue({<br>          el：’#app’,<br>          data: {<br>            sites: [<br>              {name:’上海’},<br>              {name: ‘北京’},<br>              {name: ‘广州’}<br>            ]<br>          }<br>        });<br>    </script><br>‘’’</p>
+<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>‘’’Vue<br>   <div id="app"><br>      <p>原始字符串：</p><br>      <p>反转字符串：</p><br>   </div><br>   <script><br>      new Vue({<br>        el: ‘#app’,<br>        data: {<br>          message: ‘hello’<br>        },<br>        //computed依赖缓存，当相关依赖发生变化时才会重新取值<br>        computed: {<br>          reverseMessage: function(){<br>              return this.message.split(‘’).reverse()                 .join(‘’);<br>          }<br>        }<br>      });<br>   </script><br>‘’’</p>
+<h2 id="监听属性"><a href="#监听属性" class="headerlink" title="监听属性"></a>监听属性</h2><p>‘’’Vue<br>    <div id="app"><br>        <button @click="counter++">加一</button><br>        <p></p><br>    </div><br>    <script><br>       var vm = new Vue({<br>          el: ‘#app’,<br>          data: {<br>            counter: 0<br>          }<br>        });<br>        vm.$watch(‘counter’,function(nval,oval){<br>            document.write(‘counter的值由’+oval+’变为’+oval);<br>        });<br>    </script><br>‘’’</p>
+<h2 id="样式绑定"><a href="#样式绑定" class="headerlink" title="样式绑定"></a>样式绑定</h2><p>‘’’Vue<br>    <div id="app"><br>      <button @click="fontSize--">-</button><br>      <button @click="fontSize++">+</button><br>      <p v-bind:style="{color: activeColor,fontSize: fontSize+'px' }"></p><br>    </div><br>    <script><br>      new Vue({<br>        el：”#app,<br>        data: {<br>          fontSize: 12,<br>          activeColor: ‘green’<br>        }<br>      });<br>    </script><br>‘’’</p>
+<h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>‘’’Vue<br>  <div id="app"><br>    <!-- `greet` 是在下面定义的方法名 --><br>    <button v-on:click="greet">Greet</button><br>  </div></p>
 <p>  <script><br>  var app = new Vue({<br>    el: ‘#app’,<br>    data: {<br>      name: ‘Vue.js’<br>    },<br>    // 在 <code>methods</code> 对象中定义方法<br>    methods: {<br>      greet: function (event) {<br>        // <code>this</code> 在方法里指当前 Vue 实例<br>        alert(‘Hello ‘ + this.name + ‘!’)<br>        // <code>event</code> 是原生 DOM 事件<br>        if (event) {<br>            alert(event.target.tagName)<br>        }<br>      }<br>    }<br>  })<br>  // 也可以用 JavaScript 直接调用方法<br>  app.greet() // -&gt; ‘Hello Vue.js!’<br>  </script><br>‘’’</p>
 
     </div>
